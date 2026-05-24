@@ -7,7 +7,7 @@ import Config
 config :git_ops,
   mix_project: Mix.Project.get!(),
   changelog_file: "CHANGELOG.md",
-  repository_url: "https://github.com/beam-bots/bb_ina219",
+  repository_url: "https://github.com/beam-bots/bb_sensor_ina219",
   manage_mix_version?: true,
   manage_readme_version: "README.md",
   version_tag_prefix: "v"

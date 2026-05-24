@@ -10,8 +10,8 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Project Overview
 
-`bb_ina219` is a Beam Bots integration library for the INA219 voltage /
-current / power monitor over I2C. A single `BB.INA219` sensor module polls
+`bb_sensor_ina219` is a Beam Bots integration library for the INA219 voltage /
+current / power monitor over I2C. A single `BB.Sensor.INA219` sensor module polls
 the chip and publishes `BB.Message.Sensor.PowerState` messages.
 
 ## Build and Test Commands
@@ -28,7 +28,7 @@ Prefer `mix check --no-retry` over running individual tools.
 
 ## Architecture
 
-A single module, `BB.INA219` (`lib/bb/ina219.ex`), implementing the
+A single module, `BB.Sensor.INA219` (`lib/bb/sensor/ina219.ex`), implementing the
 `BB.Sensor` behaviour:
 
 - `init/1` opens the I2C bus via `Wafer.Driver.Circuits.I2C.acquire/1`,
@@ -48,7 +48,7 @@ into two processes would only add mailbox hops.
 
 The sensor publishes SI units: Volts, Amperes, Watts. The underlying
 `INA219` library returns current in mA and power in mW; conversion happens
-in `BB.INA219.read/1`.
+in `BB.Sensor.INA219.read/1`.
 
 ## Testing
 

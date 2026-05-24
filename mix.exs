@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-defmodule BB.INA219.MixProject do
+defmodule BB.Sensor.INA219.MixProject do
   use Mix.Project
 
   @moduledoc """
@@ -14,7 +14,7 @@ defmodule BB.INA219.MixProject do
   def project do
     [
       aliases: aliases(),
-      app: :bb_ina219,
+      app: :bb_sensor_ina219,
       consolidate_protocols: Mix.env() == :prod,
       deps: deps(),
       description: @moduledoc,
@@ -39,7 +39,7 @@ defmodule BB.INA219.MixProject do
       maintainers: ["James Harton <james@harton.nz>"],
       licenses: ["Apache-2.0"],
       links: %{
-        "Source" => "https://github.com/beam-bots/bb_ina219",
+        "Source" => "https://github.com/beam-bots/bb_sensor_ina219",
         "Sponsor" => "https://github.com/sponsors/jimsynz"
       }
     ]
@@ -61,7 +61,7 @@ defmodule BB.INA219.MixProject do
         Tutorials: ~r/tutorials\//
       ],
       source_ref: "main",
-      source_url: "https://github.com/beam-bots/bb_ina219"
+      source_url: "https://github.com/beam-bots/bb_sensor_ina219"
     ]
   end
 

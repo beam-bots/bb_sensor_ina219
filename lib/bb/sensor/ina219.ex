@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-defmodule BB.INA219 do
+defmodule BB.Sensor.INA219 do
   @moduledoc """
   A BB sensor that polls an INA219 voltage / current / power monitor
   over I2C and publishes `BB.Message.Sensor.PowerState` messages.
@@ -15,7 +15,7 @@ defmodule BB.INA219 do
 
       topology do
         link :chassis do
-          sensor :main_bus, {BB.INA219,
+          sensor :main_bus, {BB.Sensor.INA219,
             bus: "i2c-1",
             address: 0x40,
             calibration: :calibrate_32V_2A,

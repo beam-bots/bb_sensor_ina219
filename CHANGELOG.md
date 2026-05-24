@@ -10,7 +10,7 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
-## [v0.1.0](https://github.com/beam-bots/bb_ina219/compare/v0.1.0...v0.1.0) (2026-05-24)
+## [v0.1.0](https://github.com/beam-bots/bb_sensor_ina219/compare/v0.1.0...v0.1.0) (2026-05-24)
 
 
 

@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 if Code.ensure_loaded?(Igniter) do
-  defmodule Mix.Tasks.BbIna219.Install do
-    @shortdoc "Installs BB.INA219 into a robot"
+  defmodule Mix.Tasks.BbSensorIna219.Install do
+    @shortdoc "Installs BB.Sensor.INA219 into a robot"
     @moduledoc """
     #{@shortdoc}
 
     Adds a `:config.:ina219` param group with `bus` and `address`, sets the
     bus name on the robot's child spec in your application module, and
-    imports `bb_ina219` into your formatter.
+    imports `bb_sensor_ina219` into your formatter.
 
     The sensor itself lives on a specific link — the installer can't guess
     which one, so it prints a snippet for you to paste into the topology.
@@ -18,8 +18,8 @@ if Code.ensure_loaded?(Igniter) do
     ## Example
 
     ```bash
-    mix igniter.install bb_ina219
-    mix igniter.install bb_ina219 --bus ftdi-3:17-i2c
+    mix igniter.install bb_sensor_ina219
+    mix igniter.install bb_sensor_ina219 --bus ftdi-3:17-i2c
     ```
 
     ## Options
@@ -53,7 +53,7 @@ if Code.ensure_loaded?(Igniter) do
       bus = Keyword.get(options, :bus, @default_bus)
 
       igniter
-      |> Formatter.import_dep(:bb_ina219)
+      |> Formatter.import_dep(:bb_sensor_ina219)
       |> BB.Igniter.add_param_group(robot_module, [:config, @param_group], param_group_body())
       |> BB.Igniter.set_robot_opts(robot_module,
         params: [config: [{@param_group, [bus: bus]}]]
@@ -74,10 +74,10 @@ if Code.ensure_loaded?(Igniter) do
 
     defp topology_snippet do
       """
-      bb_ina219: add a sensor to whichever link you want to monitor. Example:
+      bb_sensor_ina219: add a sensor to whichever link you want to monitor. Example:
 
           link :chassis do
-            sensor :main_bus, {BB.INA219,
+            sensor :main_bus, {BB.Sensor.INA219,
               bus: param([:config, :ina219, :bus]),
               address: param([:config, :ina219, :address]),
               calibration: :calibrate_32V_2A,
@@ -91,16 +91,16 @@ if Code.ensure_loaded?(Igniter) do
     end
   end
 else
-  defmodule Mix.Tasks.BbIna219.Install do
-    @shortdoc "Installs BB.INA219 into a robot"
+  defmodule Mix.Tasks.BbSensorIna219.Install do
+    @shortdoc "Installs BB.Sensor.INA219 into a robot"
     @moduledoc false
     use Mix.Task
 
     def run(_argv) do
       Mix.shell().error("""
-      The bb_ina219.install task requires igniter.
+      The bb_sensor_ina219.install task requires igniter.
 
-          mix igniter.install bb_ina219
+          mix igniter.install bb_sensor_ina219
       """)
 
       exit({:shutdown, 1})

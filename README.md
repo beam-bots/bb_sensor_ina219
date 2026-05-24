@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: 2026 James Harton
 SPDX-License-Identifier: Apache-2.0
 -->
 
-# bb_ina219
+# bb_sensor_ina219
 
 [Beam Bots](https://github.com/beam-bots/bb) integration for the
 [INA219](https://www.ti.com/product/INA219) voltage / current / power monitor
@@ -22,7 +22,7 @@ defmodule MyRobot do
 
   topology do
     link :chassis do
-      sensor :main_bus, {BB.INA219,
+      sensor :main_bus, {BB.Sensor.INA219,
         bus: "i2c-1",
         address: 0x40,
         calibration: :calibrate_32V_2A,
@@ -39,7 +39,7 @@ Subscribe to readings:
 BB.subscribe(MyRobot, [:sensor, :chassis, :main_bus])
 ```
 
-See `BB.INA219` for full options.
+See `BB.Sensor.INA219` for full options.
 
 ## Options
 
