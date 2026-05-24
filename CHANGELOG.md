@@ -3,10 +3,14 @@ SPDX-FileCopyrightText: 2026 James Harton
 
 SPDX-License-Identifier: Apache-2.0
 -->
+# Change Log
 
-# Changelog
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](Https://conventionalcommits.org) for commit guidelines.
 
-## [0.1.0] - Initial release
+<!-- changelog -->
 
-* `BB.INA219` sensor module — polls an INA219 voltage / current / power monitor
-  over I2C and publishes `BB.Message.Sensor.PowerState` messages.
+## [v0.1.0](https://github.com/beam-bots/bb_ina219/compare/v0.1.0...v0.1.0) (2026-05-24)
+
+
+
