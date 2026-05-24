@@ -4,7 +4,10 @@
 
 import Config
 
-# In this library's own dev/test environments we talk to a real INA219 over
-# an FT232H on the laptop. Downstream consumers configure their own
-# Circuits.I2C backend (e.g. the kernel driver on a Nerves target).
-config :circuits_i2c, default_backend: CircuitsFT232H.I2C.Backend
+config :git_ops,
+  mix_project: Mix.Project.get!(),
+  changelog_file: "CHANGELOG.md",
+  repository_url: "https://github.com/beam-bots/bb_ina219",
+  manage_mix_version?: true,
+  manage_readme_version: "README.md",
+  version_tag_prefix: "v"

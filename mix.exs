@@ -78,13 +78,12 @@ defmodule BB.INA219.MixProject do
 
   defp deps do
     [
-      {:bb, bb_dep("~> 0.18")},
+      {:bb, bb_dep("~> 0.19")},
       {:circuits_i2c, "~> 2.0"},
       {:ina219, "~> 2.0"},
       {:wafer, "~> 1.0"},
 
       # dev/test
-      {:circuits_ft232h, "~> 0.2", only: [:dev, :test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:doctor, "~> 0.23", only: [:dev, :test], runtime: false},
