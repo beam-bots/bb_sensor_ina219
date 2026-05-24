@@ -10,6 +10,7 @@ defmodule BB.Sensor.INA219Test do
 
   alias BB.Message
   alias BB.Message.Sensor.PowerState
+  alias BB.Sensor.INA219, as: Sensor
 
   @sensor_name :ina219_test
   @sensor_path [:chassis, @sensor_name]
@@ -62,7 +63,7 @@ defmodule BB.Sensor.INA219Test do
     test "succeeds and returns state with the resolved ina struct and interval" do
       stub_acquire_success()
 
-      assert {:ok, state} = BB.Sensor.INA219.init(default_opts())
+      assert {:ok, state} = Sensor.init(default_opts())
       assert state.ina == fake_ina()
       assert state.publish_interval_ms == 1000
       assert state.bb == default_bb_context()
@@ -80,7 +81,7 @@ defmodule BB.Sensor.INA219Test do
       stub(INA219, :acquire, fn _ -> {:ok, fake_ina()} end)
       stub(INA219, :calibrate_32V_2A, fn ina -> {:ok, ina} end)
 
-      BB.Sensor.INA219.init(default_opts(bus: "i2c-3", address: 0x41))
+      Sensor.init(default_opts(bus: "i2c-3", address: 0x41))
 
       assert_receive {:wafer_opts, opts}
       assert opts[:bus_name] == "i2c-3"
@@ -98,7 +99,7 @@ defmodule BB.Sensor.INA219Test do
         {:ok, fake_ina()}
       end)
 
-      BB.Sensor.INA219.init(default_opts(calibration: :calibrate_32V_2A))
+      Sensor.init(default_opts(calibration: :calibrate_32V_2A))
 
       assert_receive {:acquire_opts, opts}
       assert opts[:current_divisor] == 10
@@ -116,7 +117,7 @@ defmodule BB.Sensor.INA219Test do
         {:ok, fake_ina()}
       end)
 
-      BB.Sensor.INA219.init(default_opts(calibration: :calibrate_32V_1A))
+      Sensor.init(default_opts(calibration: :calibrate_32V_1A))
 
       assert_receive {:acquire_opts, opts}
       assert opts[:current_divisor] == 25
@@ -134,7 +135,7 @@ defmodule BB.Sensor.INA219Test do
         {:ok, fake_ina()}
       end)
 
-      BB.Sensor.INA219.init(default_opts(calibration: :calibrate_16V_400mA))
+      Sensor.init(default_opts(calibration: :calibrate_16V_400mA))
 
       assert_receive {:acquire_opts, opts}
       assert opts[:current_divisor] == 20
@@ -152,7 +153,7 @@ defmodule BB.Sensor.INA219Test do
         {:ok, ina}
       end)
 
-      BB.Sensor.INA219.init(default_opts(calibration: :calibrate_32V_1A))
+      Sensor.init(default_opts(calibration: :calibrate_32V_1A))
 
       assert_receive :calibrate_called
       drain_self_tick()
@@ -162,12 +163,12 @@ defmodule BB.Sensor.INA219Test do
       stub_acquire_success()
 
       assert {:ok, %{publish_interval_ms: 100}} =
-               BB.Sensor.INA219.init(default_opts(publish_rate: ~u(10 hertz)))
+               Sensor.init(default_opts(publish_rate: ~u(10 hertz)))
 
       drain_self_tick()
 
       assert {:ok, %{publish_interval_ms: 2}} =
-               BB.Sensor.INA219.init(default_opts(publish_rate: ~u(500 hertz)))
+               Sensor.init(default_opts(publish_rate: ~u(500 hertz)))
 
       drain_self_tick()
     end
@@ -175,7 +176,7 @@ defmodule BB.Sensor.INA219Test do
     test "schedules a tick" do
       stub_acquire_success()
 
-      {:ok, _} = BB.Sensor.INA219.init(default_opts(publish_rate: ~u(1000 hertz)))
+      {:ok, _} = Sensor.init(default_opts(publish_rate: ~u(1000 hertz)))
 
       assert_receive :tick, 50
     end
@@ -183,14 +184,14 @@ defmodule BB.Sensor.INA219Test do
     test "stops on Wafer acquire failure" do
       expect(Wafer.Driver.Circuits.I2C, :acquire, fn _ -> {:error, :no_such_bus} end)
 
-      assert {:stop, :no_such_bus} = BB.Sensor.INA219.init(default_opts())
+      assert {:stop, :no_such_bus} = Sensor.init(default_opts())
     end
 
     test "stops on INA219.acquire failure" do
       stub(Wafer.Driver.Circuits.I2C, :acquire, fn _ -> {:ok, fake_conn()} end)
       expect(INA219, :acquire, fn _ -> {:error, :bad_divisor} end)
 
-      assert {:stop, :bad_divisor} = BB.Sensor.INA219.init(default_opts())
+      assert {:stop, :bad_divisor} = Sensor.init(default_opts())
     end
 
     test "stops on calibration failure" do
@@ -198,7 +199,7 @@ defmodule BB.Sensor.INA219Test do
       stub(INA219, :acquire, fn _ -> {:ok, fake_ina()} end)
       expect(INA219, :calibrate_32V_2A, fn _ -> {:error, :calibration_failed} end)
 
-      assert {:stop, :calibration_failed} = BB.Sensor.INA219.init(default_opts())
+      assert {:stop, :calibration_failed} = Sensor.init(default_opts())
     end
   end
 
@@ -222,7 +223,7 @@ defmodule BB.Sensor.INA219Test do
         :ok
       end)
 
-      assert {:noreply, ^state} = BB.Sensor.INA219.handle_info(:tick, state)
+      assert {:noreply, ^state} = Sensor.handle_info(:tick, state)
 
       assert_receive {:published, TestRobot, [:sensor, :chassis, @sensor_name], payload}
       assert payload.voltage == 12.4
@@ -241,7 +242,7 @@ defmodule BB.Sensor.INA219Test do
         :ok
       end)
 
-      BB.Sensor.INA219.handle_info(:tick, state)
+      Sensor.handle_info(:tick, state)
 
       assert_receive {:frame_id, @sensor_name}
       drain_self_tick()
@@ -251,7 +252,7 @@ defmodule BB.Sensor.INA219Test do
       stub(INA219, :bus_voltage, fn _ -> {:error, :i2c_timeout} end)
       reject(&BB.publish/3)
 
-      assert {:noreply, ^state} = BB.Sensor.INA219.handle_info(:tick, state)
+      assert {:noreply, ^state} = Sensor.handle_info(:tick, state)
       drain_self_tick()
     end
 
@@ -260,7 +261,7 @@ defmodule BB.Sensor.INA219Test do
       stub(BB, :publish, fn _, _, _ -> :ok end)
 
       state = %{state | publish_interval_ms: 10}
-      BB.Sensor.INA219.handle_info(:tick, state)
+      Sensor.handle_info(:tick, state)
 
       assert_receive :tick, 50
     end
@@ -269,7 +270,7 @@ defmodule BB.Sensor.INA219Test do
       stub(INA219, :bus_voltage, fn _ -> {:error, :i2c_timeout} end)
 
       state = %{state | publish_interval_ms: 10}
-      BB.Sensor.INA219.handle_info(:tick, state)
+      Sensor.handle_info(:tick, state)
 
       assert_receive :tick, 50
     end
@@ -284,7 +285,7 @@ defmodule BB.Sensor.INA219Test do
       }
 
       assert {:ok, new_state} =
-               BB.Sensor.INA219.handle_options([publish_rate: ~u(50 hertz)], state)
+               Sensor.handle_options([publish_rate: ~u(50 hertz)], state)
 
       assert new_state.publish_interval_ms == 20
       assert new_state.ina == state.ina
