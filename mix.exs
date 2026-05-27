@@ -9,7 +9,7 @@ defmodule BB.Sensor.INA219.MixProject do
   Beam Bots integration for the INA219 voltage/current/power monitor over I2C.
   """
 
-  @version "0.2.0"
+  @version "0.2.1"
 
   def project do
     [
