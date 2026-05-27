@@ -78,7 +78,7 @@ defmodule BB.Sensor.INA219.MixProject do
 
   defp deps do
     [
-      {:bb, bb_dep("~> 0.19")},
+      {:bb, bb_dep("~> 0.20")},
       {:circuits_i2c, "~> 2.0"},
       {:ina219, "~> 2.0"},
       {:wafer, "~> 1.0"},

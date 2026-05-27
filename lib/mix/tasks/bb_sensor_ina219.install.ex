@@ -8,9 +8,10 @@ if Code.ensure_loaded?(Igniter) do
     @moduledoc """
     #{@shortdoc}
 
-    Adds a `:config.:ina219` param group with `bus` and `address`, sets the
-    bus name on the robot's child spec in your application module, and
-    imports `bb_sensor_ina219` into your formatter.
+    Adds a `:config.:ina219` param group with `bus` and `address`, writes the
+    bus name default to `config/config.exs`, wires the robot's child spec to
+    load its opts from the application environment, and imports
+    `bb_sensor_ina219` into your formatter.
 
     The sensor itself lives on a specific link — the installer can't guess
     which one, so it prints a snippet for you to paste into the topology.
@@ -55,9 +56,7 @@ if Code.ensure_loaded?(Igniter) do
       igniter
       |> Formatter.import_dep(:bb_sensor_ina219)
       |> BB.Igniter.add_param_group(robot_module, [:config, @param_group], param_group_body())
-      |> BB.Igniter.set_robot_opts(robot_module,
-        params: [config: [{@param_group, [bus: bus]}]]
-      )
+      |> BB.Igniter.set_robot_param_default(robot_module, [:config, @param_group, :bus], bus)
       |> Igniter.add_notice(topology_snippet())
     end
 
