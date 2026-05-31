@@ -4,7 +4,16 @@ SPDX-FileCopyrightText: 2026 James Harton
 SPDX-License-Identifier: Apache-2.0
 -->
 
+<img src="https://github.com/beam-bots/bb/blob/main/logos/beam_bots_logo.png?raw=true" alt="Beam Bots Logo" width="250" />
+
 # bb_sensor_ina219
+
+[![CI](https://github.com/beam-bots/bb_sensor_ina219/actions/workflows/ci.yml/badge.svg)](https://github.com/beam-bots/bb_sensor_ina219/actions/workflows/ci.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache--2.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Hex version badge](https://img.shields.io/hexpm/v/bb_sensor_ina219.svg)](https://hex.pm/packages/bb_sensor_ina219)
+[![Hexdocs badge](https://img.shields.io/badge/docs-hexdocs-purple)](https://hexdocs.pm/bb_sensor_ina219)
+[![REUSE status](https://api.reuse.software/badge/github.com/beam-bots/bb_sensor_ina219)](https://api.reuse.software/info/github.com/beam-bots/bb_sensor_ina219)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/beam-bots/bb_sensor_ina219)
 
 [Beam Bots](https://github.com/beam-bots/bb) integration for the
 [INA219](https://www.ti.com/product/INA219) voltage / current / power monitor
