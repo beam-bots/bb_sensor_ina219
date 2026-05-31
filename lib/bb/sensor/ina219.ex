@@ -40,10 +40,12 @@ defmodule BB.Sensor.INA219 do
   is the sensor's position in the topology. Fields are in SI units (Volts,
   Amperes, Watts).
 
-  A single failed read is logged at warning level and does not crash the
-  process — the polling loop continues. Persistent failures will manifest as
-  silence on the topic rather than a crash; future work may add a heartbeat
-  or self-test message for liveness monitoring.
+  Read failures crash the process — going silent on the topic would hide
+  a dead sensor from the supervisor and from downstream consumers. The
+  supervisor restarts the process per its restart strategy; if the device
+  is genuinely gone (e.g. a USB-attached bus disappeared), `init/1` will
+  fail to reacquire and the restart intensity limit propagates the failure
+  up the tree.
   """
 
   use BB.Sensor
@@ -56,8 +58,6 @@ defmodule BB.Sensor.INA219 do
   alias BB.Robot.Units
   alias Localize.Unit
   alias Wafer.Driver.Circuits.I2C, as: CircuitsI2C
-
-  require Logger
 
   @calibrations [:calibrate_32V_2A, :calibrate_32V_1A, :calibrate_16V_400mA]
 
@@ -118,16 +118,10 @@ defmodule BB.Sensor.INA219 do
 
   @impl BB.Sensor
   def handle_info(:tick, state) do
-    case read(state.ina) do
-      {:ok, fields} ->
-        frame_id = List.last(state.bb.path)
-        message = Message.new!(PowerState, frame_id, fields)
-        BB.publish(state.bb.robot, [:sensor | state.bb.path], message)
-
-      {:error, reason} ->
-        Logger.warning("INA219 read failed at #{inspect(state.bb.path)}: #{inspect(reason)}")
-    end
-
+    {:ok, fields} = read(state.ina)
+    frame_id = List.last(state.bb.path)
+    message = Message.new!(PowerState, frame_id, fields)
+    BB.publish(state.bb.robot, [:sensor | state.bb.path], message)
     schedule_tick(state.publish_interval_ms)
     {:noreply, state}
   end
