@@ -45,12 +45,10 @@ defmodule Mix.Tasks.BbSensorIna219.InstallTest do
       """)
     end
 
-    test "reads the robot child opts from the application env" do
+    test "leaves the robot's robot_opts/0 child opts untouched" do
       project_with_robot()
       |> Igniter.compose_task("bb_sensor_ina219.install")
-      |> assert_has_patch("lib/test/application.ex", ~s'''
-      + |    children = [{Test.Robot, Application.get_env(:test, Test.Robot, [])}]
-      ''')
+      |> assert_unchanged("lib/test/application.ex")
     end
   end
 
