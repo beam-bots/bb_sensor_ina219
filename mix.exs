@@ -36,6 +36,7 @@ defmodule BB.Sensor.INA219.MixProject do
 
   defp package do
     [
+      files: ~w(lib .formatter.exs mix.exs README* CHANGELOG* LICENSE* usage-rules.md),
       maintainers: ["James Harton <james@harton.nz>"],
       licenses: ["Apache-2.0"],
       links: %{
@@ -93,7 +94,8 @@ defmodule BB.Sensor.INA219.MixProject do
       {:git_ops, "~> 2.9", only: [:dev, :test], runtime: false},
       {:igniter, "~> 0.6", only: [:dev, :test], runtime: false},
       {:mimic, "~> 2.2", only: :test, runtime: false},
-      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false}
+      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
+      {:usage_rules, "~> 1.2", only: [:dev], runtime: false}
     ]
   end
 
